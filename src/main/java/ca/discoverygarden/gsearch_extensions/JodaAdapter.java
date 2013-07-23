@@ -5,8 +5,10 @@ import java.util.Vector;
 import org.joda.time.DateTime;
 import org.joda.time.format.*;
 
-public class JodaAdapter {
+import org.apache.log4j.Logger;
 
+public class JodaAdapter {
+	final protected static Logger logger = Logger.getLogger(JodaAdapter.class);
 	
 	final static Vector<DateTimeFormatter> parsers = new Vector<DateTimeFormatter>();
 	final static DateTimeFormatter isoFormatter = ISODateTimeFormat.dateTime().withZoneUTC();
@@ -37,12 +39,13 @@ public class JodaAdapter {
 				DateTime parsed = i.parseDateTime(dateString);
 				return isoFormatter.print(parsed);
 			}
-			catch (Exception e) {
-				// TODO: Log something with a very low level... FINEST?
+			catch (IllegalArgumentException e) {
+				// Eat the exception, we'll try the next.
 			}
 		}
 		
-		// TODO: Dump some warning message to log.
+		// Dump a warning message to log.
+		logger.warn("Failed to transform \"" + dateString + "\" to something Solr understands. PID: \"" + pid + "\" DSID: \"" + datastream + "\"");
 		return "";
 	}
 	
