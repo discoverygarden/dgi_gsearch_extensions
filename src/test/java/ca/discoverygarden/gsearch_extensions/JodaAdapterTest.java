@@ -52,6 +52,7 @@ public class JodaAdapterTest extends TestCase {
 		String format = "H™y™d™M™ZZ™m";
 		String dest = "2013-07-22T00:00:00.000Z";
 		
+		assertEquals("", JodaAdapter.transformForSolr(source));
 		JodaAdapter.addDateParser(format);
 		assertEquals(dest, JodaAdapter.transformForSolr(source));
 	}
@@ -61,8 +62,8 @@ public class JodaAdapterTest extends TestCase {
 		String format = "H™y™d™M™ZZ™m";
 		String dest = "2013-07-22T00:00:00.000Z";
 		
+		assertEquals("", JodaAdapter.transformForSolr(source));
 		JodaAdapter.addDateParser(0, format);
 		assertEquals(dest, JodaAdapter.transformForSolr(source));
-		JodaAdapter.resetParsers();
 	}
 }
