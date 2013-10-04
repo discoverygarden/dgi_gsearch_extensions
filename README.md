@@ -18,6 +18,9 @@ INSTALLATION
 Build the extensions with `mvn package`, and copy the created jar into GSearch's
 lib directory (`$CATALINA_HOME/webapps/fedoragsearch/WEB-INF/lib`).
 
+If you want to include Joda Time manually use gsearch_extensions-0.1.0.jar otherwise use 
+gsearch_extensions-0.1.0-jar-with-dependencies.jar
+
 CONFIGURATION
 -------------
 
