@@ -4,7 +4,7 @@
 
   <groupId>ca.discoverygarden</groupId>
   <artifactId>gsearch_extensions</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <packaging>jar</packaging>
 
 
@@ -29,6 +29,11 @@
     	<artifactId>log4j-1.2-api</artifactId>
     	<version>2.0-beta8</version>
     	<scope>provided</scope>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-lang3</artifactId>
+    	<version>3.3.2</version>
     </dependency>
   </dependencies>
   
