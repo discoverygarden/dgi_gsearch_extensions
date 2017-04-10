@@ -51,7 +51,7 @@ public class JSONToXML {
    *   JSON to convert.
    *
    * @return
-   *   XML Node.
+   *   XML Document.
    */
   public static Document convertJSONToDocument(String in) 
   throws ParserConfigurationException, SAXException, IOException

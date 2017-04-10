@@ -2,6 +2,14 @@ package ca.discoverygarden.gsearch_extensions;
 
 import junit.framework.TestCase;
 
+import java.io.IOException;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 /**
  * Tests that we can get XML from JSON.
  */
@@ -37,5 +45,15 @@ public class JSONToXMLTest extends TestCase {
     String transformed = JSONToXML.convertJSONToXML(testJson, "custom");
 
     assertEquals(dest, transformed);
+  }
+  
+  /**
+   * Tests conversion to a Document object.
+   */
+  public void testDocumentConversion() throws ParserConfigurationException, SAXException, IOException {
+	Document transformed = JSONToXML.convertJSONToDocument(testJson);
+	NodeList thingList = transformed.getElementsByTagName("thing_1");
+	
+	assertEquals(thingList.getLength(), 1);
   }
 }
