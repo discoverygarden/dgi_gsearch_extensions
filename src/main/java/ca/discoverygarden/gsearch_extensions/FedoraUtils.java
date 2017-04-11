@@ -70,21 +70,21 @@ public class FedoraUtils {
    *   An InputStream at the constructed dissemination point.
    */
   public static InputStream getDatastreamDisseminationInputStream(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
-	  URL url;
-	  // Attempt to generate the URL from input.
-	  try {
-        url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
-	      return url.openStream();
-	  }
+    URL url;
+    // Attempt to generate the URL from input.
+    try {
+      url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
+      return url.openStream();
+    }
     // On exception, log and return a stream with no content so the caller
     // doesn't get messed up.
-	  catch (MalformedURLException e) {
-		    logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
-	  }
-	  catch (IOException e) {
-		    logger.warn(String.format("Failed to open stream: %s", e.getMessage()));
-	  }
-	  return new ByteArrayInputStream("".getBytes());
+    catch (MalformedURLException e) {
+      logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
+    }
+    catch (IOException e) {
+      logger.warn(String.format("Failed to open stream: %s", e.getMessage()));
+    }
+    return new ByteArrayInputStream("".getBytes());
   }
 
   /**
@@ -106,23 +106,23 @@ public class FedoraUtils {
    *   The text of the given datastream.
    */
   public static String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
-	  try {
-	      URL url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
-        InputStream dsStream = url.openStream();
-        Scanner scanner = new Scanner(dsStream);
-        // If no content, return an empty string.
-        String dsString = scanner.hasNext() ? scanner.next() : "";
-        logger.debug(String.format("getRawDatastreamDissemination (pid: %s, DSID: %s): %s", pid, dsId, dsString));
-        return dsString;
-	  } 
+    try {
+      URL url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
+      InputStream dsStream = url.openStream();
+      Scanner scanner = new Scanner(dsStream);
+      // If no content, return an empty string.
+      String dsString = scanner.hasNext() ? scanner.next() : "";
+      logger.debug(String.format("getRawDatastreamDissemination (pid: %s, DSID: %s): %s", pid, dsId, dsString));
+      return dsString;
+    } 
     // On exception, log and return an empty string so the caller doesn't get
     // messed up.
     catch (MalformedURLException e) {
-	      logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
-	  }
+      logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
+    }
     catch (IOException e) {
-		    logger.warn(String.format("Failed to open connection to datastream dissemination: %s", e.getMessage()));
-	  }
+      logger.warn(String.format("Failed to open connection to datastream dissemination: %s", e.getMessage()));
+    }
     return "";
   }
 
@@ -140,6 +140,6 @@ public class FedoraUtils {
     // Build the URL.
     String url = String.format("%s/objects/%s/datastreams/%s/content", fedoraBase, pid, dsId);
     logger.debug(String.format("Building URL for %s", url));
-	  return new URL(url);
+    return new URL(url);
   }
 }
