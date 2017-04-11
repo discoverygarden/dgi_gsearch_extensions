@@ -105,7 +105,7 @@ public class FedoraUtils {
    * @return String
    *   The text of the given datastream.
    */
-  public static String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) throws FileNotFoundException {
+  public static String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
 	  try {
 	      URL url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
         InputStream dsStream = url.openStream();

@@ -53,7 +53,7 @@ public class JSONToXML {
    * @return
    *   XML document.
    */
-  public static Document convertJSONToDocument(String in, String enclosing_tag) 
+  public static Document convertJSONToDocument(String in) 
   throws ParserConfigurationException, SAXException, IOException
   {
     return convertJSONToDocument(in, "json");
