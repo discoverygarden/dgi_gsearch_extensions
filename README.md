@@ -134,7 +134,7 @@ The resultant document can be interpreted as a Node-Set by Xalan, for example:
 Variable|Description
 --------|-----------
 `$input`|The input JSON string.
-`$enclosing_tag|(Optional) The top-level element to wrap resultant XML in, to prevent invalid XML from being written. If not provided, defaults to an element called 'json'.
+`$enclosing_tag`|(Optional) The top-level element to wrap resultant XML in, to prevent invalid XML from being written. If not provided, defaults to an element called 'json'.
 
 ## Troubleshooting/Issues
 
