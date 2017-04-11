@@ -75,6 +75,7 @@ Escapes a string for inclusion in XML, for example, in cases where the contents 
 The list of characters being replaced are based off of the Apache Commons lang3 library's [escapeXML10](https://commons.apache.org/proper/commons-lang/javadocs/api-3.5/org/apache/commons/lang3/StringEscapeUtils.html#escapeXml10-java.lang.String-) list of replaced characters.
 
 Variable|Description
+--------|-----------
 `$input`|The string to sanitize.
 `$replacement`|(Optional) The string to use when replacing invalid characters; otherwise, invalid characters will be replaced with Unicode U+FFFD (the Unicode replacement character).
 
