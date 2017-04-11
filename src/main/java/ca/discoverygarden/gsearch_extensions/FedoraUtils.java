@@ -1,6 +1,5 @@
 package ca.discoverygarden.gsearch_extensions;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -8,7 +7,31 @@ import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.util.Scanner;
+
+/**
+ * Authenticator for connecting to Fedora.
+ */
+class FedoraAuthenticator extends Authenticator {
+
+  protected String fedoraUser;
+  protected String fedoraPass;
+
+  public void setCredentials(String username, String password) {
+    fedoraUser = username;
+    fedoraPass = password;
+  }
+
+  /**
+   * Overloaded password authenticator.
+   */
+  protected PasswordAuthentication getPasswordAuthentication() {
+    return new PasswordAuthentication(fedoraUser, fedoraPass.toCharArray());
+  }
+
+}
 
 /**
  * Utilities for interfacing with Fedora in ways that GSearch can't.
@@ -25,7 +48,8 @@ public class FedoraUtils {
    * @param dsId
    *   The ID of the datastream to get.
    * @param fedoraBase
-   *   The base URL of fedora, e.g., localhost:8080/fedora.
+   *   The base URL of fedora, including protocol; e.g., 
+   *   http://localhost:8080/fedora.
    * @param fedoraUser
    *   The Fedora username to connect with.
    * @param fedoraPass
@@ -34,7 +58,7 @@ public class FedoraUtils {
    * @return InputStream
    *   An InputStream at the constructed dissemination point.
    */
-  public static InputStream getDatastreamDisseminationInputStream(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
+  public InputStream getDatastreamDisseminationInputStream(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
 	  URL url;
 	  // Attempt to generate the URL from input.
 	  try {
@@ -58,7 +82,8 @@ public class FedoraUtils {
    * @param dsId
    *   The ID of the datastream to get.
    * @param fedoraBase
-   *   The base URL of fedora, e.g., localhost:8080/fedora.
+   *   The base URL of fedora, including protocol; e.g.,
+   *   http://localhost:8080/fedora.
    * @param fedoraUser
    *   The Fedora username to connect with.
    * @param fedoraPass
@@ -67,20 +92,20 @@ public class FedoraUtils {
    * @return String
    *   The text of the given datastream.
    */
-  public static String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
+  public String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
 	  try {
 	      URL url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
-	  	  URLConnection connection = url.openConnection();
-	  	  InputStream dsStream = connection.getInputStream();
-	  	  String encoding = connection.getContentEncoding();
-	  	  encoding = encoding == null ? "UTF=8" : encoding;
-	  	  return IOUtils.toString(dsStream, encoding);
+        InputStream dsStream = url.openStream();
+        Scanner scanner = new Scanner(dsStream);
+        String dsString = scanner.hasNext() ? scanner.next() : "";
+        logger.debug(String.format("getRawDatastreamDissemination (pid: %s, DSID: %s): %s", pid, dsId, dsString));
+        return dsString;
 	  } catch (MalformedURLException e) {
 	      logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
 	  } catch (IOException e) {
-		  logger.warn(String.format("Failed to open connection to datastream dissemination: %s", e.getMessage()));
+		    logger.warn(String.format("Failed to open connection to datastream dissemination: %s", e.getMessage()));
 	  }
-      return "";
+    return "";
   }
 
   /**
@@ -89,8 +114,12 @@ public class FedoraUtils {
    * @return URL
    *   A URL object using the given parameters.
    */
-  protected static URL getDatastreamDisseminationURL(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) throws MalformedURLException {
-	  String formattedUrl = String.format("http://%s:%s@%s/objects/%s/datastreams/%s/content", fedoraUser, fedoraPass, fedoraBase, pid, dsId);
-	  return new URL(formattedUrl);
+  protected static final URL getDatastreamDisseminationURL(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) throws MalformedURLException {
+    FedoraAuthenticator auth = new FedoraAuthenticator();
+    auth.setCredentials(fedoraUser, fedoraPass);
+    Authenticator.setDefault(auth);
+    String url = String.format("%s/objects/%s/datastreams/%s/content", fedoraBase, pid, dsId);
+    logger.debug(String.format("Building URL for %s", url));
+	  return new URL(url);
   }
 }

@@ -20,14 +20,13 @@ public class FedoraUtilsTest extends TestCase {
 	public void testURLBuild() throws MalformedURLException {
 		String pid = "test:pid";
 		String dsId = "TEST_DSID";
-		String fedoraBase = "localhost:8080/fedora";
+		String fedoraBase = "http://localhost:8080/fedora";
 		String fedoraUser = "test_user";
 		String fedoraPass = "test_pass";
 		URL url = FedoraUtils.getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
 		
 		assertEquals(url.getPort(), 8080);
 		assertEquals(url.getPath(), "/fedora/objects/test:pid/datastreams/TEST_DSID/content");
-		assertEquals(url.getUserInfo(), "test_user:test_pass");
 	}
 
 }
