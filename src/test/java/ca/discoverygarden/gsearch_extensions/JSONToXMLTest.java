@@ -22,38 +22,39 @@ public class JSONToXMLTest extends TestCase {
    * Set up the thingy.
    */
   protected void setUp() throws Exception {
-    super.setUp();
+      super.setUp();
   }
 
   /**
    * Tests conversion with the default root element.
    */
   public void testDefaultRootElement() {
-    // Should be XML enclosed in a 'json' tag.
-    String dest = "<json><thing_1><subthing_1.2>value_1.2</subthing_1.2><subthing_1.1>value_1.1</subthing_1.1></thing_1><thing_2>value_2</thing_2></json>";
-    String transformed = JSONToXML.convertJSONToXML(testJson);
+      // Should be XML enclosed in a 'json' tag.
+      String dest = "<json><thing_1><subthing_1.2>value_1.2</subthing_1.2><subthing_1.1>value_1.1</subthing_1.1></thing_1><thing_2>value_2</thing_2></json>";
+      String transformed = JSONToXML.convertJSONToXML(testJson);
 
-    assertEquals(dest, transformed);
+      assertEquals(dest, transformed);
   }
 
   /**
    * Tests conversion with a custom root element.
    */
   public void testCustomRootElement() {
-    // Should be XML enclosed in a 'custom' tag.
-    String dest = "<custom><thing_1><subthing_1.2>value_1.2</subthing_1.2><subthing_1.1>value_1.1</subthing_1.1></thing_1><thing_2>value_2</thing_2></custom>";
-    String transformed = JSONToXML.convertJSONToXML(testJson, "custom");
+      // Should be XML enclosed in a 'custom' tag.
+      String dest = "<custom><thing_1><subthing_1.2>value_1.2</subthing_1.2><subthing_1.1>value_1.1</subthing_1.1></thing_1><thing_2>value_2</thing_2></custom>";
+      String transformed = JSONToXML.convertJSONToXML(testJson, "custom");
 
-    assertEquals(dest, transformed);
+      assertEquals(dest, transformed);
   }
   
   /**
    * Tests conversion to a Document object.
    */
   public void testDocumentConversion() throws ParserConfigurationException, SAXException, IOException {
-	Document transformed = JSONToXML.convertJSONToDocument(testJson);
-	NodeList thingList = transformed.getElementsByTagName("thing_1");
+	    Document transformed = JSONToXML.convertJSONToDocument(testJson);
+	    NodeList thingList = transformed.getElementsByTagName("thing_1");
 	
-	assertEquals(thingList.getLength(), 1);
+      // We should have a thing_1 node in our loaded document.
+	    assertEquals(thingList.getLength(), 1);
   }
 }

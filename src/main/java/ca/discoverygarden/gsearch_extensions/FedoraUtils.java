@@ -19,6 +19,14 @@ class FedoraAuthenticator extends Authenticator {
   protected String fedoraUser;
   protected String fedoraPass;
 
+  /**
+   * Set the username and password for this authenticator.
+   *
+   * @param username
+   *   The username to set.
+   * @param password
+   *   The password to set.
+   */
   public void setCredentials(String username, String password) {
     fedoraUser = username;
     fedoraPass = password;
@@ -26,6 +34,9 @@ class FedoraAuthenticator extends Authenticator {
 
   /**
    * Overloaded password authenticator.
+   *
+   * @return PasswordAuthentication
+   *   Authentication for this authenticator.
    */
   protected PasswordAuthentication getPasswordAuthentication() {
     return new PasswordAuthentication(fedoraUser, fedoraPass.toCharArray());
@@ -58,18 +69,20 @@ public class FedoraUtils {
    * @return InputStream
    *   An InputStream at the constructed dissemination point.
    */
-  public InputStream getDatastreamDisseminationInputStream(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
+  public static InputStream getDatastreamDisseminationInputStream(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
 	  URL url;
 	  // Attempt to generate the URL from input.
 	  try {
-		  url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
+        url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
 	      return url.openStream();
 	  }
+    // On exception, log and return a stream with no content so the caller
+    // doesn't get messed up.
 	  catch (MalformedURLException e) {
-		  logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
+		    logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
 	  }
 	  catch (IOException e) {
-		  logger.warn(String.format("Failed to open stream: %s", e.getMessage()));
+		    logger.warn(String.format("Failed to open stream: %s", e.getMessage()));
 	  }
 	  return new ByteArrayInputStream("".getBytes());
   }
@@ -92,17 +105,22 @@ public class FedoraUtils {
    * @return String
    *   The text of the given datastream.
    */
-  public String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) {
+  public static String getRawDatastreamDissemination(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) throws FileNotFoundException {
 	  try {
 	      URL url = getDatastreamDisseminationURL(pid, dsId, fedoraBase, fedoraUser, fedoraPass);
         InputStream dsStream = url.openStream();
         Scanner scanner = new Scanner(dsStream);
+        // If no content, return an empty string.
         String dsString = scanner.hasNext() ? scanner.next() : "";
         logger.debug(String.format("getRawDatastreamDissemination (pid: %s, DSID: %s): %s", pid, dsId, dsString));
         return dsString;
-	  } catch (MalformedURLException e) {
+	  } 
+    // On exception, log and return an empty string so the caller doesn't get
+    // messed up.
+    catch (MalformedURLException e) {
 	      logger.warn(String.format("Attempt to generate URL for datastream dissemination failed: %s", e.getMessage()));
-	  } catch (IOException e) {
+	  }
+    catch (IOException e) {
 		    logger.warn(String.format("Failed to open connection to datastream dissemination: %s", e.getMessage()));
 	  }
     return "";
@@ -115,9 +133,11 @@ public class FedoraUtils {
    *   A URL object using the given parameters.
    */
   protected static final URL getDatastreamDisseminationURL(String pid, String dsId, String fedoraBase, String fedoraUser, String fedoraPass) throws MalformedURLException {
+    // Set the authenticator.
     FedoraAuthenticator auth = new FedoraAuthenticator();
     auth.setCredentials(fedoraUser, fedoraPass);
     Authenticator.setDefault(auth);
+    // Build the URL.
     String url = String.format("%s/objects/%s/datastreams/%s/content", fedoraBase, pid, dsId);
     logger.debug(String.format("Building URL for %s", url));
 	  return new URL(url);

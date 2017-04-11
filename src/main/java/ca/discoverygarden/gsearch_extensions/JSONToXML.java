@@ -51,12 +51,29 @@ public class JSONToXML {
    *   JSON to convert.
    *
    * @return
-   *   XML Document.
+   *   XML document.
    */
-  public static Document convertJSONToDocument(String in) 
+  public static Document convertJSONToDocument(String in, String enclosing_tag) 
   throws ParserConfigurationException, SAXException, IOException
   {
-    StringReader xmlStringReader = new StringReader(convertJSONToXML(in));
+    return convertJSONToDocument(in, "json");
+  }
+
+  /**
+   * Convert a JSON string to an XML document.
+   *
+   * @param in
+   *   JSON to convert.
+   * @param enclosing_tag
+   *   The tag to enclose the results in.
+   *
+   * @return
+   *   XML Document.
+   */
+  public static Document convertJSONToDocument(String in, String enclosing_tag) 
+  throws ParserConfigurationException, SAXException, IOException
+  {
+    StringReader xmlStringReader = new StringReader(convertJSONToXML(in, enclosing_tag));
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
