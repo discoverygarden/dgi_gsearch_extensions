@@ -19,13 +19,6 @@ public class JSONToXMLTest extends TestCase {
   protected static final String testJson = "{\"thing_1\":{\"subthing_1.1\":\"value_1.1\",\"subthing_1.2\":\"value_1.2\"},\"thing_2\":\"value_2\"}";
 
   /**
-   * Set up the thingy.
-   */
-  protected void setUp() throws Exception {
-    super.setUp();
-  }
-
-  /**
    * Tests conversion with the default root element.
    */
   public void testDefaultRootElement() {
