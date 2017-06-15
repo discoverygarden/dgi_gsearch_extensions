@@ -57,7 +57,7 @@ public class JSONToXMLTest extends TestCase {
    * Tests conversion of JSON with keys containing invalid characters.
    */
   public void testWeirdKeyedJson() {
-    String dest = "<json><thing1><subthing_1.2>sub(value)_1.2</subthing_1.2><subthing_1.1>sub/value_1.1</subthing_1.1></thing1><thing_2>2value_2</thing_2></json>";
+    String dest = "<json><thing1><subthing_1.1>sub/value_1.1</subthing_1.1><subthing_1.2>sub(value)_1.2</subthing_1.2></thing1><thing_2>2value_2</thing_2></json>";
     String transformed = JSONToXML.convertJSONToXML(testWeirdKeyedJson);
 
     assertEquals(dest, transformed);
