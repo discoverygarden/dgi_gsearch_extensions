@@ -61,21 +61,23 @@ public class ElementSafeJSONXML extends XML {
 
     if (object instanceof JSONObject) {
 
+      // Prepend with tagName.
       if (tagName != null) {
         sb.append('<');
         sb.append(tagName);
         sb.append('>');
       }
 
-      // Loop thru the keys.
+      // Loop through the keys.
       jo = (JSONObject) object;
       for (final String key : jo.keySet()) {
-        // Build a string using our replacements.
+        // Sanitize the key using restricted version of the XML spec.
         StringBuilder keyBuilder = new StringBuilder();
         keyBuilder.append(key.substring(0, 1).replaceAll(invalidFirstCharacterRegex, ""));
         keyBuilder.append(key.substring(1).replaceAll(invalidCharacterRegex, ""));
         final String sanitizedKey = keyBuilder.toString();
 
+        // Get the value; convert if not JSONObject.
         Object value = jo.get(key);
         if (value == null) {
           value = "";
@@ -83,7 +85,7 @@ public class ElementSafeJSONXML extends XML {
           value = new JSONArray(value);
         }
 
-        // Emit content in body
+        // Emit content in body.
         if ("content".equals(key)) {
           if (value instanceof JSONArray) {
             ja = (JSONArray) value;
@@ -99,8 +101,7 @@ public class ElementSafeJSONXML extends XML {
             sb.append(escape(value.toString()));
           }
 
-          // Emit an array of similar keys
-
+        // Emit an array of similar keys.
         } else if (value instanceof JSONArray) {
           ja = (JSONArray) value;
           for (Object val : ja) {
@@ -116,30 +117,32 @@ public class ElementSafeJSONXML extends XML {
               sb.append(toString(val, sanitizedKey));
             }
           }
+        // Give us a />'d version of the tag if the value is empty.
         } else if ("".equals(value)) {
           sb.append('<');
           sb.append(sanitizedKey);
           sb.append("/>");
 
-          // Emit a new tag <k>
-
+        // Emit a new tag using the sanitized key.
         } else {
           sb.append(toString(value, sanitizedKey));
         }
       }
-      if (tagName != null) {
 
-        // Emit the </tagname> close tag
+      // Close the tag if we must.
+      if (tagName != null) {
         sb.append("</");
         sb.append(tagName);
         sb.append('>');
       }
-      return sb.toString();
 
+      // Return the XML string we've built.
+      return sb.toString();
     }
 
+    // If this is a JSONArray, create an array of elements.
     if (object != null && (object instanceof JSONArray || object.getClass().isArray())) {
-      if(object.getClass().isArray()) {
+      if (object.getClass().isArray()) {
         ja = new JSONArray(object);
       } else {
         ja = (JSONArray) object;
@@ -150,13 +153,15 @@ public class ElementSafeJSONXML extends XML {
         // <array> element.
         sb.append(toString(val, tagName == null ? "array" : tagName));
       }
+      // Return the XML string we've built.
       return sb.toString();
     }
 
+    // If this is just a string, we've hit the bottom of the iterator and can
+    // just write an element.
     string = (object == null) ? "null" : escape(object.toString());
     return (tagName == null) ? "\"" + string + "\""
       : (string.length() == 0) ? "<" + tagName + "/>" : "<" + tagName
       + ">" + string + "</" + tagName + ">";
-
   }
 }
