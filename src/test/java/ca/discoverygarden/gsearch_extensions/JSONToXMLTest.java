@@ -17,6 +17,8 @@ public class JSONToXMLTest extends TestCase {
 
   // Our test JSON we use twice.
   protected static final String testJson = "{\"thing_1\":{\"subthing_1.1\":\"value_1.1\",\"subthing_1.2\":\"value_1.2\"},\"thing_2\":\"value_2\"}";
+  // Some test JSON with weird keys.
+  protected static final String testWeirdKeyedJson = "{\"thing 1\":{\"sub/thing_1.1\":\"sub/value_1.1\",\"sub(thing)_1.2\":\"sub(value)_1.2\"},\"2thing_2\":\"2value_2\"}";
 
   /**
    * Tests conversion with the default root element.
@@ -49,5 +51,15 @@ public class JSONToXMLTest extends TestCase {
 
     // We should have a thing_1 node in our loaded document.
     assertEquals(thingList.getLength(), 1);
+  }
+
+  /**
+   * Tests conversion of JSON with keys containing invalid characters.
+   */
+  public void testWeirdKeyedJson() {
+    String dest = "<json><thing1><subthing_1.2>sub(value)_1.2</subthing_1.2><subthing_1.1>sub/value_1.1</subthing_1.1></thing1><thing_2>2value_2</thing_2></json>";
+    String transformed = JSONToXML.convertJSONToXML(testWeirdKeyedJson);
+
+    assertEquals(dest, transformed);
   }
 }
