@@ -18,7 +18,7 @@ public class JSONToXMLTest extends TestCase {
   // Our test JSON we use twice.
   protected static final String testJson = "{\"thing_1\":{\"subthing_1.1\":\"value_1.1\",\"subthing_1.2\":\"value_1.2\"},\"thing_2\":\"value_2\"}";
   // Some test JSON with weird keys.
-  protected static final String testWeirdKeyedJson = "{\"thing 1\":{\"sub/thing_1.1\":\"sub/value_1.1\",\"sub(thing)_1.2\":\"sub(value)_1.2\"},\"2thing_2\":\"2value_2\"}";
+  protected static final String testWeirdKeyedJson = "{\"thing 1\":{\"sub/thing_1.1\":\"sub/value_1.1\",\"sub(thing)_1.2\":\"sub(value)_1.2\"},\"2thing_2\":\"2value_2\",\"34-_thing_3\":\"34-_value_3\"}";
 
   /**
    * Tests conversion with the default root element.
@@ -55,9 +55,14 @@ public class JSONToXMLTest extends TestCase {
 
   /**
    * Tests conversion of JSON with keys containing invalid characters.
+   *
+   * Testing the removal of the following things from element names:
+   *  - Non-alphabet characters, and non-underscores from the first character.
+   *  - Non-alphanumeric characters, spaces, slashes, and parentheses from the
+   *    remaining characters.
    */
   public void testWeirdKeyedJson() {
-    String dest = "<json><thing1><subthing_1.1>sub/value_1.1</subthing_1.1><subthing_1.2>sub(value)_1.2</subthing_1.2></thing1><thing_2>2value_2</thing_2></json>";
+    String dest = "<json><thing1><subthing_1.1>sub/value_1.1</subthing_1.1><subthing_1.2>sub(value)_1.2</subthing_1.2></thing1><thing_2>2value_2</thing_2><_thing_3>34-_value_3</_thing_3></json>";
     String transformed = JSONToXML.convertJSONToXML(testWeirdKeyedJson);
 
     assertEquals(dest, transformed);
