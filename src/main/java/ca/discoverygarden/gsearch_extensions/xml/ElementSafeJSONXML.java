@@ -72,7 +72,7 @@ public class ElementSafeJSONXML extends XML {
       jo = (JSONObject) object;
       for (final String key : jo.keySet()) {
         // Sanitize the key using restricted version of the XML spec.
-        final String sanitizedKey = key.replaceFirst(invalidFirstCharacterRegex).replaceAll(invalidCharacterRegex);
+        final String sanitizedKey = key.replaceFirst(invalidFirstCharacterRegex, "").replaceAll(invalidCharacterRegex, "");
 
         // Get the value; convert if not JSONObject.
         Object value = jo.get(key);
