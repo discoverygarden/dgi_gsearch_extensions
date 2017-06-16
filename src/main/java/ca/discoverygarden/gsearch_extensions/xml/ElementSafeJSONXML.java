@@ -21,7 +21,7 @@ public class ElementSafeJSONXML extends XML {
    *
    * @see https://www.w3.org/TR/REC-xml/#NT-NameStartChar
    */
-  protected static final String invalidFirstCharacterRegex = "[^a-zA-Z_]";
+  protected static final String invalidFirstCharacterRegex = "^[^a-zA-Z_]+";
 
   /**
    * Regex to match invalid characters after the first in an element name.
@@ -72,10 +72,7 @@ public class ElementSafeJSONXML extends XML {
       jo = (JSONObject) object;
       for (final String key : jo.keySet()) {
         // Sanitize the key using restricted version of the XML spec.
-        StringBuilder keyBuilder = new StringBuilder();
-        keyBuilder.append(key.substring(0, 1).replaceAll(invalidFirstCharacterRegex, ""));
-        keyBuilder.append(key.substring(1).replaceAll(invalidCharacterRegex, ""));
-        final String sanitizedKey = keyBuilder.toString();
+        final String sanitizedKey = key.replaceFirst(invalidFirstCharacterRegex).replaceAll(invalidCharacterRegex);
 
         // Get the value; convert if not JSONObject.
         Object value = jo.get(key);
