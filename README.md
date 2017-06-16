@@ -107,6 +107,8 @@ Variable|Description
 
 #### `ca.discoverygarden.gsearch_extensions.JSONToXML`
 
+Note that when converting JSON to XML, JSON object keys are turned into element names. Keys are formatted to fit a strict set of appropriate element naming conventions; one or more adjacent characters beginning from the start of the key are removed if not alphabetic or an underscore, and the remaining letters are removed if not alphanumeric, an underscore, a dash, or a period. Bear in mind that while colons are valid in names, they are stripped as the XML converter has no mechanism to specify namespaces.
+
 ##### `convertJSONToXML($input, $enclosing_tag)`
 
 Converts a JSON string to an XML string.

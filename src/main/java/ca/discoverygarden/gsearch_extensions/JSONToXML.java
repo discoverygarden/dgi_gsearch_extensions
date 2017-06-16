@@ -1,7 +1,7 @@
 package ca.discoverygarden.gsearch_extensions;
 
 import org.json.JSONObject;
-import org.json.XML;
+import ca.discoverygarden.gsearch_extensions.xml.ElementSafeJSONXML;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
@@ -37,11 +37,11 @@ public class JSONToXML {
    *   The tag to enclose the results in.
    *
    * @return
-   *   XML string. 
+   *   XML string.
    */
   public static String convertJSONToXML(String in, String enclosing_tag) {
     JSONObject json = new JSONObject(in);
-    return XML.toString(json, enclosing_tag);
+    return ElementSafeJSONXML.toString(json, enclosing_tag);
   }
 
   /**
@@ -53,7 +53,7 @@ public class JSONToXML {
    * @return
    *   XML document.
    */
-  public static Document convertJSONToDocument(String in) 
+  public static Document convertJSONToDocument(String in)
   throws ParserConfigurationException, SAXException, IOException
   {
     return convertJSONToDocument(in, "json");
