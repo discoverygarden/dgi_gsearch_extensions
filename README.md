@@ -36,6 +36,8 @@ This is intended to work around limitations with using Solr 4.10.x or lower with
 
 Returns a string that has been left-padded with the given number of zeroes on every delimited token starting with a digit. Bear in mind that as part of this process, the delimiters are removed from the final string.
 
+*N.B.* An empty string will be returned as an empty string.
+
 Variable|Description|Default
 --------|-----------|-------
 `$string`|The string to left-pad tokens for.|N/A

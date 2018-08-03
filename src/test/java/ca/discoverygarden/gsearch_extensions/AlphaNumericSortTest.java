@@ -47,4 +47,12 @@ public class AlphaNumericSortTest extends TestCase {
     assertEquals(padded, "000Part-1Part Part_4Part/5PartPart007Part");
   }
 
+  /**
+   * Tests that an empty string is ignored.
+   */
+  public void testEmptyString() {
+    String padded = AlphaNumericSort.leftPadTokens("");
+    assertEquals(padded, "");
+  }
+
 }

@@ -75,6 +75,10 @@ public class AlphaNumericSort {
    *   The string with left-padded tokens.
    */
   public static String leftPadTokens(String in, Integer zeroes, String delimiters) {
+    // If the string is empty, just return it.
+    if (in.isEmpty()) {
+      return in;
+    }
     // Build the string of zeroes to be appended to each token.
     StringBuilder zero_string = new StringBuilder();
     for (Integer i = 0; i < zeroes; i++) {
