@@ -16,7 +16,7 @@ package ca.discoverygarden.gsearch_extensions;
  */
 public class AlphaNumericSort {
 
-	/**
+  /**
    * Left-pad each numeric part of a string using defaults.
    *
    * @param in
@@ -24,26 +24,26 @@ public class AlphaNumericSort {
    *
    * @return
    *   The string with left-padded tokens.
-	 */
-	public static String leftPadTokens(String in) {
+   */
+  public static String leftPadTokens(String in) {
     String delimiters = getDefaultDelimiters();
-		return leftPadTokens(in, 5, delimiters);
-	}
-
-	/**
-	 * Left-pad each numeric part of a string using given delimiters.
-	 *
-	 * @param in
-	 *   The string to left-pad.
-	 * @param delimiters
-	 *   A regular expression representing the delimiters to split on.
-	 *
-	 * @return
-	 *   The string with left-padded tokens.
-	 */
-	public static String leftPadTokens(String in, String delimiters) {
     return leftPadTokens(in, 5, delimiters);
-	}
+  }
+
+  /**
+   * Left-pad each numeric part of a string using given delimiters.
+   *
+   * @param in
+   *   The string to left-pad.
+   * @param delimiters
+   *   A regular expression representing the delimiters to split on.
+   *
+   * @return
+   *   The string with left-padded tokens.
+   */
+  public static String leftPadTokens(String in, String delimiters) {
+    return leftPadTokens(in, 5, delimiters);
+  }
 
   /**
    * Left-pad each numeric part of a string using a given number of zeroes.
