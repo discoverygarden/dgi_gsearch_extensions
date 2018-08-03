@@ -10,9 +10,9 @@ discoverygarden's GSearch extensions, providing extended functionality available
 
 ## Installation
 
-Build the extensions with `mvn package`, and copy the created jar into GSearch's lib directory (`$CATALINA_HOME/webapps/fedoragsearch/WEB-INF/lib`).
+Build the extensions with `mvn package`, and copy one of the two created `.jar`s in the `target` folder into GSearch's lib directory (`$CATALINA_HOME/webapps/fedoragsearch/WEB-INF/lib`).
 
-If providing package libraries yourself, use gsearch_extensions-0.1.4.jar; otherwise use gsearch_extensions-0.1.4-jar-with-dependencies.jar.
+To use the the library dependencies pre-packaged with the extensions, use the `.jar` file suffixed with `-jar-with-dependencies.jar`; otherwise, you can simply use the non-suffixed `.jar` and provide your own copy of the libraries where appropriate.
 
 ## Usage
 
