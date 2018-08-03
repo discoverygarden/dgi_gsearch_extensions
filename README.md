@@ -42,7 +42,7 @@ Variable|Description|Default
 --------|-----------|-------
 `$string`|The string to left-pad tokens for.|N/A
 `$zeroes`|An integer representing the number of zeroes to pad numeric tokens with.|`5`
-`$delimiter`|A regular expression representing how to tokenize the string. Likely a series of characters or strings split on `|`.|`"-|_|/| "`
+`$delimiter`|A regular expression representing how to tokenize the string. Likely a series of characters or strings split on `\|`.|`"-\|_\|/\| "`
 
 #### `ca.discoverygarden.gsearch_extensions.JodaAdapter`
 
