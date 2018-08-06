@@ -34,9 +34,9 @@ Delimits a string on one or more delimiters into tokens, left-pads each numeric 
 
 This is intended to work around limitations with using Solr 4.10.x or lower with XSLT 1.0; newer versions of Solr would allow us to control the way we sort on tokenized strings with better granularity, but with 4.10.x, we're going to have to pre-pad each token before index time. Additionally, with XSLT 2.0, we could perform this easily in XSLT itself, but XSLT 1.0 requires us to know either precisely how we're delimiting every string, or to split strings via recursive templates, which could end up being extremely slow.
 
-Returns a string that has been left-padded with the given number of zeroes on every delimited token starting with a digit. Bear in mind that as part of this process, the delimiters are removed from the final string.
+Returns a string that has been left-padded with the given number of zeroes on every delimited token starting with a digit. Bear in mind that as part of this process, the delimiters are removed from the final string. An empty string will be returned as an empty string.
 
-*N.B.* An empty string will be returned as an empty string.
+*N.B.* As it currently exists, this padding is intended to work to sort tokens of the same length; it is not complicated enough to handle other cases. This may be addressed in the future, but as it stands, be aware that this will not provide you with 1:1 functionality to Solr 6.x.
 
 Variable|Description|Default
 --------|-----------|-------
