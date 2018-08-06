@@ -7,12 +7,16 @@ package ca.discoverygarden.gsearch_extensions;
  * of tools that otherwise would give us the functionality we desire, namely:
  *
  * * Solr 4.10 or less doesn't give us the ability to control the query slop, so
- *   we can't lock down ordering of tokens when sorting. The best solution here
- *   is to perform our alphanumeric sort padding at index time by providing the
- *   index with a sortable "tokenized" string.
+ *   we can't lock down token order when sorting. We'd also be determining the
+ *   query slop programmatically on a case by case basis so we don't break other
+ *   sorts, which could get hairy. The solution here is to perform our sort
+ *   padding at index time by providing it with a sortable string that appears
+ *   tokenized and functions as such.
  * * XSLT 1.0 doesn't give us a clean way of splitting and re-assembling a
- *   string; the "standard" method is to do it with recursive templates, which
- *   are barely even acceptable when you have a guaranteed recursion depth.
+ *   string when multiple delimiters are involved and you can't know how many of
+ *   them will be needed beforehand. The "standard" method is to do it with
+ *   recursive templates, which are barely even acceptable when you have a
+ *   guaranteed recursion depth. Java will do this for us much more efficiently.
  */
 public class AlphaNumericSort {
 
