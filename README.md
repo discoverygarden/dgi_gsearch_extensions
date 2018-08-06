@@ -10,9 +10,9 @@ discoverygarden's GSearch extensions, providing extended functionality available
 
 ## Installation
 
-Build the extensions with `mvn package`, and copy the created jar into GSearch's lib directory (`$CATALINA_HOME/webapps/fedoragsearch/WEB-INF/lib`).
+Build the extensions with `mvn package`, and copy one of the two created `.jar`s in the `target` folder into GSearch's lib directory (`$CATALINA_HOME/webapps/fedoragsearch/WEB-INF/lib`).
 
-If providing package libraries yourself, use gsearch_extensions-0.1.2.jar; otherwise use gsearch_extensions-0.1.2-jar-with-dependencies.jar.
+To use the the library dependencies pre-packaged with the extensions, use the `.jar` file suffixed with `-jar-with-dependencies.jar`; otherwise, you can simply use the non-suffixed `.jar` and provide your own copy of the libraries where appropriate.
 
 ## Usage
 
@@ -25,6 +25,24 @@ Extensions are available to the java namespace of your XSLT parser. In Xalan, th
 From there, extension functions can be called at that namespace.
 
 ### Functions Available
+
+#### `ca.discoverygarden.gsearch_extensions.AlphaNumericSort`
+
+##### `leftPadTokens($string, $zeroes, $delimiter)`
+
+Delimits a string on one or more delimiters into tokens, left-pads each numeric token with a given number of zeroes, and reassembles the string.
+
+This is intended to work around limitations with using Solr 4.10.x or lower with XSLT 1.0; newer versions of Solr would allow us to control the way we sort on tokenized strings with better granularity, but with 4.10.x, we're going to have to pre-pad each token before index time. Additionally, with XSLT 2.0, we could perform this easily in XSLT itself, but XSLT 1.0 requires us to know either precisely how we're delimiting every string, or to split strings via recursive templates, which could end up being extremely slow.
+
+Returns a string that has been left-padded with the given number of zeroes on every delimited token starting with a digit. Bear in mind that as part of this process, the delimiters are removed from the final string. An empty string will be returned as an empty string.
+
+*N.B.* As it currently exists, this padding is intended to work to sort tokens of the same length; it is not complicated enough to handle other cases. This may be addressed in the future, but as it stands, be aware that this will not provide you with 1:1 functionality to Solr 6.x.
+
+Variable|Description|Default
+--------|-----------|-------
+`$string`|The string to left-pad tokens for.|N/A
+`$zeroes`|An integer representing the number of zeroes to pad numeric tokens with.|`5`
+`$delimiter`|A regular expression representing how to tokenize the string. Likely a series of characters or strings split on `\|`.|`-\|_\|/\| `
 
 #### `ca.discoverygarden.gsearch_extensions.JodaAdapter`
 
